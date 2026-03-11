@@ -1,0 +1,98 @@
+/* SIDEBAR */
+.sidebar {
+    width: 210px;
+    min-height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid #eee;
+    padding: 10px;
+}
+
+/* LOGO */
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:20px 10px;
+    margin-bottom:10px;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.logo-img{
+    height:60px;
+    width:auto;
+}
+
+.logo-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+}
+
+.logo-main{
+    padding-left: 15px;
+    font-size:22px;
+    font-weight:700;
+    color:#0d6efd;
+}
+
+.logo-sub{
+    font-size:16px;
+    font-weight:600;
+    color:#0d6efd;
+    white-space:nowrap;
+}
+
+/* MENU ITEM */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin: 6px 0;
+    border-radius: 10px;
+    color: #1f2b50;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* ICON */
+.menu-item i {
+    font-size: 18px;
+}
+
+/* ACTIVE */
+.menu-item.active {
+    background-color: #f6eaea;   /* SAME AS IMAGE */
+    color: #1f2b50;
+}
+
+/* HOVER (same as active) */
+.menu-item:hover {
+    background-color: #f6eaea;
+    color: #1f2b50;
+}
+
+/* LOGOUT */
+.menu-item.logout {
+    color: #dc3545;
+}
+
+.menu-item.logout:hover {
+    background-color: #fdecec;
+}
+
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 20px;
+    width: calc(100% - 220px);
+}
+
+/* ===== DASHBOARD CARDS ===== */
+.card {
+    border-radius: 10px;
+}
+

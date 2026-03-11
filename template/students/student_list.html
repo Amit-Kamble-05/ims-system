@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admissions Reports | IMS{% endblock %}
+{% block page_title %}Admissions Reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/students.css' %}">
+<link rel="stylesheet" href="{% static 'css/simple-table.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="report-page">
+
+    <!-- ================= TABS ================= -->
+    <ul class="report-tabs">
+        <li class="{% if request.GET.status == 'INCOMPLETE' %}active{% endif %}">
+            <a href="{% url 'student_list' %}?status=INCOMPLETE">Ongoing Report</a>
+        </li>
+
+        <li class="{% if request.GET.status == 'CONFIRMED' %}active{% endif %}">
+            <a href="{% url 'student_list' %}?status=CONFIRMED&{{ request.GET.urlencode }}">Completed Report</a>
+        </li>
+
+        <li>
+            <a href="{% url 'student_list' %}">All Admission</a>
+        </li>
+    </ul>
+
+    <!-- ================= FILTER BAR ================= -->
+    <form method="get">
+        <div class="report-filter">
+            <div>
+                <h5>Admissions Reports</h5>
+            </div>
+            <div id="actionBar" class="action-bar d-none mb-3">
+                <a id="btnView" class="btn btn-primary">View</a>
+                <a id="btnEdit" class="btn btn-warning" style="margin-left: 50px;">Edit</a>
+                <a id="btnDelete" class="btn btn-danger" style="margin-left: 50px;">Delete</a>
+            </div>
+            
+            <div class="filter-right">
+
+                <!-- SORT BY -->
+                <div>
+                    <label>Sort By</label>
+                    <select name="sort_by" id="sortBy" class="form-control">
+                        <option value="">Select</option>
+                        <option value="month" {% if request.GET.sort_by == 'month' %}selected{% endif %}>Month</option>
+                        <option value="single_date" {% if request.GET.sort_by == 'single_date' %}selected{% endif %}>Single Date</option>
+                        <option value="multi_date" {% if request.GET.sort_by == 'multi_date' %}selected{% endif %}>Multi Date</option>
+                    </select>
+                </div>
+
+                <!-- MONTH (AUTO SELECT CURRENT MONTH) -->
+                {% now "n" as current_month %}
+                <div id="monthBox" style="display:none;">
+                    <label>Month</label>
+                    <select name="month" class="form-control">
+                        <option value="">Select</option>
+                        <option value="1"  {% if request.GET.month|default:current_month == "1" %}selected{% endif %}>January</option>
+                        <option value="2"  {% if request.GET.month|default:current_month == "2" %}selected{% endif %}>February</option>
+                        <option value="3"  {% if request.GET.month|default:current_month == "3" %}selected{% endif %}>March</option>
+                        <option value="4"  {% if request.GET.month|default:current_month == "4" %}selected{% endif %}>April</option>
+                        <option value="5"  {% if request.GET.month|default:current_month == "5" %}selected{% endif %}>May</option>
+                        <option value="6"  {% if request.GET.month|default:current_month == "6" %}selected{% endif %}>June</option>
+                        <option value="7"  {% if request.GET.month|default:current_month == "7" %}selected{% endif %}>July</option>
+                        <option value="8"  {% if request.GET.month|default:current_month == "8" %}selected{% endif %}>August</option>
+                        <option value="9"  {% if request.GET.month|default:current_month == "9" %}selected{% endif %}>September</option>
+                        <option value="10" {% if request.GET.month|default:current_month == "10" %}selected{% endif %}>October</option>
+                        <option value="11" {% if request.GET.month|default:current_month == "11" %}selected{% endif %}>November</option>
+                        <option value="12" {% if request.GET.month|default:current_month == "12" %}selected{% endif %}>December</option>
+                    </select>
+                </div>
+
+                <!-- SINGLE DATE -->
+                <div id="singleDateBox" style="display:none;">
+                    <label>Date</label>
+                    <input type="date" name="single_date" value="{{ request.GET.single_date }}" class="form-control">
+                </div>
+
+                <!-- MULTI DATE -->
+                <div id="multiDateBox" class="multi-date-row" style="display:none;">
+                    <div class="date-field">
+                        <label>Start Date</label>
+                        <input type="date" name="start_date"
+                            value="{{ request.GET.start_date }}"
+                            class="form-control">
+                    </div>
+                    <div class="date-field">
+                        <label>End Date</label>
+                        <input type="date" name="end_date"
+                            value="{{ request.GET.end_date }}"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <button class="btn btn-search">🔍 Search</button>
+                <a href="{% url 'student_list' %}" class="btn btn-clear">Clear</a>
+
+            </div>
+        </div>
+    </form>
+
+    <!-- ================= TABLE (UNCHANGED) ================= -->
+    <div class="table-responsive">
+        <table class="table report-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>FORM NO.</th>
+                    <th>STUDENT NAME</th>
+                    <th>TEACHER</th>
+                    <th>COURSE</th>
+                    <th>BATCH</th>
+                    <th>TRACK</th>
+                    <th>TOTAL FEES</th>
+                    <th>FEES PAID</th>
+                    <th>DUE</th>
+                    <th>STATUS</th>
+                    <th>ADMISSION DATE</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in student_data %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="student-check"
+                               data-student-id="{{  row.student.id}}"
+                               data-admission-id="{{  row.admission.id|default:'' }}">
+                    </td>
+                    <td>{{  row.admission.id }}</td>
+                    <td>
+                        <strong>{{ row.student.first_name }} {{ row.student.last_name }}</strong><br>
+                        <small>{{ row.student.phone }}</small>
+                    </td>
+                    <td>{{ row.teacher|default:"—" }}</td>
+                    <td>
+                        <span class="course-pill">
+                            {{ row.admission.course.name }}
+                        </span>
+                    </td>
+                    <td>{{ row.batch|default:"—" }}</td>
+                    <td>{{ row.track|default:"DAILY" }}</td>
+                    <td>
+                        <span class="badge-fees blue">
+                            {{ row.admission.discounted_fees|add:100 }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-fees orange">
+                            {{ row.installment.total_paid|default:"0" }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="due-amount">
+                            ₹ {{ row.due_fees|default:"0" }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if row.status == 'CONFIRMED' %}
+                            <span class="status green">Completed</span>
+                        {% elif row.status == 'INCOMPLETE' %}
+                            <span class="status yellow">Ongoing</span>
+                        {% else %}
+                            <span class="status gray">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ row.admission_date|date:"d-m-Y"|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="12" class="text-center text-muted">
+                        No records found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sortBy = document.getElementById("sortBy");
+    const monthBox = document.getElementById("monthBox");
+    const singleDateBox = document.getElementById("singleDateBox");
+    const multiDateBox = document.getElementById("multiDateBox");
+
+    function toggleFilters() {
+        monthBox.style.display = "none";
+        singleDateBox.style.display = "none";
+        multiDateBox.style.display = "none";
+
+        if (sortBy.value === "month") {
+            monthBox.style.display = "block";
+        }
+        else if (sortBy.value === "single_date") {
+            singleDateBox.style.display = "block";
+        }
+        else if (sortBy.value === "multi_date") {
+            multiDateBox.style.display = "block";
+        }
+    }
+
+    sortBy.addEventListener("change", toggleFilters);
+    toggleFilters(); // run on page load
+});
+</script>
+
+<script src="{% static 'js/students.js' %}"></script>
+{% endblock %}

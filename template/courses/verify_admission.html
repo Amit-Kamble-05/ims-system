@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admission Verified</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f8f9fa;
+            padding: 40px;
+        }
+        .card {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+        }
+        .verified {
+            font-size: 22px;
+            color: green;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="verified">✔ Admission Verified</div>
+
+    <p><strong>Student:</strong>
+        {{ admission.student.first_name }} {{ admission.student.last_name }}
+    </p>
+
+    <p><strong>Course:</strong> {{ admission.course.name }}</p>
+
+    <p><strong>Admission No:</strong> {{ admission.id }}</p>
+
+    <p><strong>Status:</strong> {{ admission.status }}</p>
+
+    <small>
+        This receipt is genuine and verified by the Institute Management System.
+    </small>
+</div>
+
+</body>
+</html>

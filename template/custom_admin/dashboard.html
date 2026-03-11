@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row g-4">
+
+    <!-- MONTHLY STATUS -->
+    <div class="col-md-6">
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="{% static 'img/dashboard/monthly.png' %}" class="icon-img">
+                    <h5 class="mb-0">Monthly Status</h5>
+                </div>
+                <input type="month" class="form-control w-auto" value="{{ month }}" onchange="location='?month='+this.value">
+            </div>
+
+            <hr>
+
+            <div class="row text-muted">
+                <div class="col">
+                    Total Admission : <b>{{ monthly_admission_count }}</b>
+                </div>
+                <div class="col text-end">
+                    Total Collection : <b class="text-success">₹{{ monthly_collection }}</b>
+                </div>
+            </div>
+
+            <div class="row mt-2 text-muted">
+                <div class="col">
+                    Total Billing : <b>₹{{ monthly_billing }}</b>
+                </div>
+                <div class="col text-end">
+                    Total Enquiry : <b>{{ monthly_enquiry_count }}</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAILY STATUS -->
+    <div class="col-md-6">
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="{% static 'img/dashboard/daily_status.png' %}" class="icon-img">
+                    <h5 class="mb-0">Daily Status</h5>
+                </div>
+                <input type="date" class="form-control w-auto" value="{{ day }}" onchange="location='?day='+this.value">
+            </div>
+
+            <hr>
+
+            <div class="row text-muted">
+                <div class="col">
+                    Total Admission : <b>{{ daily_admission_count }}</b>
+                </div>
+                <div class="col text-end">
+                    Total Collection : <b class="text-success">₹{{ daily_collection }}</b>
+                </div>
+            </div>
+
+            <div class="row mt-2 text-muted">
+                <div class="col">
+                    Total Billing : <b>₹{{ daily_billing }}</b>
+                </div>
+                <div class="col text-end">
+                    Total Enquiry : <b>{{ daily_enquiry_count }}</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- QUICK LINKS -->
+<div class="dashboard-card mt-4">
+    <h5 class="mb-3">Quick Links</h5>
+
+    <div class="row g-3 text-center">
+
+        <div class="col-md-3">
+            <a href="{% url 'add_student' %}" class="{% if '/students/' in request.path %}active{% endif %}">
+                <div class="quick-box bg-green">
+                    <img src="{% static 'img/dashboard/admission.png' %}">
+                    <p>Admission</p>
+                </div>
+            </a>
+        </div>
+
+       <div class="col-md-3">
+            <a href="{% url 'add_enquiry' %}" class="{% if '/enquiry/' in request.path %}active{% endif %}">
+                <div class="quick-box bg-blue">
+                    <img src="{% static 'img/dashboard/enquiry.png' %}">
+                    <p>Enquiry</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'receipt_list' %}" class="{% if '/courses/' in request.path %}active{% endif %}">
+                <div class="quick-box bg-blue">
+                    <img src="{% static 'img/dashboard/fees.png' %}">
+                    <p>Fees</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'student_list' %}" class="{% if '/students/' in request.path %}active{% endif %}">
+                <div class="quick-box bg-indigo">
+                    <img src="{% static 'img/dashboard/student_report.png' %}">
+                    <p>Student Reports</p>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-md-3">
+            <a href="{% url 'enquiry_reports' %}" class="{% if '/enquiry/' in request.path %}active{% endif %}">
+                <div class="quick-box bg-pink">
+                    <img src="{% static 'img/dashboard/enquiry_report.png' %}">
+                    <p>Enquiry Reports</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- <div class="col-md-3">
+            <div class="quick-box bg-yellow">
+                <img src="{% static 'img/dashboard/exam.png' %}">
+                <p>Alloted Exam</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="quick-box bg-red">
+                <img src="{% static 'img/dashboard/expense.png' %}">
+                <p>Add Expenses</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="quick-box bg-orange">
+                <img src="{% static 'img/dashboard/task.png' %}">
+                <p>Task</p>
+            </div>
+        </div> -->
+    </div>
+    <div class="col-md-6">
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-telephone"></i>
+                    <h5 class="mb-0">Today's Follow-ups</h5>
+                </div>
+            </div>
+            <hr>
+            {% if today_followups %}
+                <table class="table table-sm">
+                    <tbody>
+                        {% for e in today_followups %}
+                        <tr>
+                            <td>
+                                <strong>
+                                    <a href="{% url 'enquiry_detail' e.Enq_ID %}">
+                                        {{ e.first_name }} {{ e.last_name }}
+                                    </a>
+                                </strong>
+                            </td>
+                            <td>{{ e.mobile_no }}</td>
+                            <td class="text-end">
+                                {{ e.followup_time|time:"H:i" }}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No follow-ups today</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

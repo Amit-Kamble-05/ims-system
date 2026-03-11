@@ -1,0 +1,10 @@
+asgiref==3.11.0
+charset-normalizer==3.4.4
+colorama==0.4.6
+Django==6.0.1
+pillow==12.1.0
+qrcode==8.2
+reportlab==4.4.9
+sqlparse==0.5.5
+tzdata==2025.3
+pandas==2.2.2

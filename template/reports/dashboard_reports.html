@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row g-4">
+
+    <div class="col-md-6">
+        <div class="dashboard-card">
+            <h5>📊 Enquiry vs Admission</h5>
+            <canvas id="enquiryChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="dashboard-card">
+            <h5>📈 Monthly Revenue</h5>
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-12">
+        <div class="dashboard-card">
+            <h5>📉 Daily Activity</h5>
+            <canvas id="dailyChart"></canvas>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/Daily_Activity_Chart.js' %}"></script>
+<script src="{% static 'js/Monthly_Revenue_Chart.js' %}"></script>
+<script src="{% static 'js/Enquiry vs Admission Chart.js' %}"></script>
+{% endblock %}

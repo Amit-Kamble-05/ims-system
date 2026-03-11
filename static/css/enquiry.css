@@ -1,0 +1,18 @@
+.section-title{
+font-size:15px;
+font-weight:600;
+margin-bottom:10px;
+padding-bottom:5px;
+border-bottom:1px solid #e6e6e6;
+color:#444;
+}
+
+.form-control,
+.form-select{
+border-radius:8px;
+}
+
+.card{
+border-radius:12px;
+}
+

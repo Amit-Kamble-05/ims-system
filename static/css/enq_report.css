@@ -1,0 +1,298 @@
+/* =========================
+   PAGE TITLE
+========================= */
+
+.page-title{
+    font-weight:600;
+    font-size:22px;
+    color:#1f2937;
+}
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-box{
+    display:flex;
+    align-items:center;
+}
+
+.search-box input{
+    width:240px;
+    border-radius:6px;
+    border:1px solid #d1d5db;
+    padding:6px 10px;
+    font-size:14px;
+}
+
+.search-box input:focus{
+    outline:none;
+    border-color:#6366f1;
+    box-shadow:0 0 0 2px rgba(99,102,241,0.1);
+}
+
+/* =========================
+   REPORT CARD
+========================= */
+
+.report-card{
+    background:#ffffff;
+    border-radius:12px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.05);
+    padding:18px;
+    border:1px solid #e5e7eb;
+}
+
+.report-header{
+    font-weight:600;
+    font-size:15px;
+    margin-bottom:14px;
+    color:#374151;
+}
+
+/* =========================
+   TABLE STYLE
+========================= */
+
+.erp-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+/* HEADER */
+
+.erp-table thead{
+    background:#1f2937;
+    color:white;
+}
+
+.erp-table th{
+    padding:12px 14px;
+    font-weight:500;
+    text-align:left;
+    border-bottom:2px solid #374151;
+}
+
+/* BODY */
+
+.erp-table td{
+    padding:12px 14px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+/* ROW HOVER */
+
+.erp-table tbody tr{
+    transition:all 0.2s ease;
+}
+
+.erp-table tbody tr:hover{
+    background:#f9fafb;
+}
+
+/* =========================
+   STUDENT NAME
+========================= */
+
+.student-name{
+    font-weight:600;
+    color:#111827;
+}
+
+/* =========================
+   ID LINK
+========================= */
+
+.link-id{
+    font-weight:600;
+    text-decoration:none;
+    color:#2563eb;
+}
+
+.link-id:hover{
+    text-decoration:underline;
+}
+
+/* =========================
+   COURSE LABEL
+========================= */
+
+.course-pill{
+    background:#e0ecff;
+    color:#1e40af;
+    padding:5px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:500;
+    display:inline-block;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.status{
+    padding:5px 12px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-block;
+}
+
+/* NEW */
+
+.status-new{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+/* CONVERTED */
+
+.status-converted{
+    background:#d1fae5;
+    color:#059669;
+}
+
+/* CLOSED */
+
+.status-closed{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+/* =========================
+   RESPONSIVE TABLE
+========================= */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+/* =========================
+   SMALL SCREEN
+========================= */
+
+@media (max-width:768px){
+
+    .page-title{
+        font-size:18px;
+    }
+
+    .search-box input{
+        width:160px;
+    }
+
+    .erp-table th,
+    .erp-table td{
+        font-size:13px;
+        padding:10px;
+    }
+
+}
+.page-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.filters{
+display:flex;
+gap:10px;
+}
+
+.search-input{
+padding:6px 10px;
+border:1px solid #ddd;
+border-radius:6px;
+width:220px;
+}
+
+.date-filter,
+.status-filter{
+padding:6px 8px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.report-card{
+background:white;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+padding:20px;
+}
+
+.erp-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.erp-table thead{
+background:#1f2937;
+color:white;
+}
+
+.erp-table th,
+.erp-table td{
+padding:12px;
+border-bottom:1px solid #e5e7eb;
+}
+
+.erp-table tbody tr:hover{
+background:#f3f4f6;
+}
+
+.link-id{
+color:#2563eb;
+font-weight:600;
+text-decoration:none;
+}
+
+.student-name{
+font-weight:600;
+}
+
+.course-pill{
+background:#e0ecff;
+padding:4px 10px;
+border-radius:6px;
+color:#1e40af;
+font-size:13px;
+}
+
+.status{
+padding:4px 10px;
+border-radius:6px;
+font-size:12px;
+font-weight:600;
+}
+
+.status-new{
+background:#dbeafe;
+color:#2563eb;
+}
+
+.status-converted{
+background:#d1fae5;
+color:#059669;
+}
+
+.status-closed{
+background:#fee2e2;
+color:#dc2626;
+}
+
+.clear-btn{
+background:#ef4444;
+color:white;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:13px;
+}
+
+.clear-btn:hover{
+background:#dc2626;
+}

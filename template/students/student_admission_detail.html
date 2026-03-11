@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admission Details | IMS{% endblock %}
+{% block page_title %}Admission Details{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admission_details.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="admission-wrapper">
+
+    <!-- ================= HEADER ================= -->
+    <div class="admission-header">
+        <div>
+            <h3>Admission Details</h3>
+            <p class="sub-text">
+                Student & course information with fee status
+            </p>
+        </div>
+
+        <div>
+            {% if admission.status == 'CONFIRMED' %}
+                <span class="status-badge success">Confirmed</span>
+            {% else %}
+                <span class="status-badge warning">Incomplete</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ================= BASIC DETAILS ================= -->
+    <div class="info-card">
+        <div class="info-grid">
+
+            <div>
+                <label>Student Name</label>
+                <p>{{ admission.student.first_name }} {{ admission.student.last_name }}</p>
+            </div>
+
+            <div>
+                <label>Course</label>
+                <p>{{ admission.course.name }}</p>
+            </div>
+
+            <div>
+                <label>Course Content</label>
+                <p>{{ admission.course_content.content_name }}</p>
+            </div>
+
+            <div>
+                <label>Batch Type</label>
+                <p>{{ admission.batch_type }}</p>
+            </div>
+
+            <div>
+                <label>Batch Time</label>
+                <p>{{ admission.batch_time }}</p>
+            </div>
+
+            <div>
+                <label>Payment Type</label>
+                <p>{{ admission.payment_type }}</p>
+            </div>
+
+            <div>
+                <label>Total Fees</label>
+                <p class="amount">₹ {{ admission.discounted_fees|add:100 }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= FEES TABLE ================= -->
+    <div class="table-card">
+        <h4>Fees Structure</h4>
+
+        <div class="table-responsive">
+            <table class="fees-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Installment</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for inst in installments %}
+                    <tr>
+                        <td>{{ inst.pay_date }}</td>
+                        <td>{{ inst.installment_type }}</td>
+                        <td class="amount">₹ {{ inst.amount }}</td>
+                        <td>
+                            {% if inst.status == 'PAID' %}
+                                <span class="badge paid">Paid</span>
+                            {% else %}
+                                <span class="badge unpaid">Unpaid</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn-receipt print-btn" data-id="{{ inst.id }}">
+                                Print
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty">
+                            No installments added
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Total Paid</th>
+                        <th colspan="3" class="amount">₹ {{ total_paid }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Remaining Balance</th>
+                        <th colspan="3" class="amount danger">
+                            ₹ {{ remaining_balance }}
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================= ACTIONS ================= -->
+    <div class="action-bar">
+        <a href="{% url 'admission_receipt' admission.id %}" target="_blank" class="btn-primary">
+            Print Full Receipt
+        </a>
+
+        <a href="{% url 'student_list' %}" class="btn-secondary">
+            Back to Students
+        </a>
+    </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.print-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const instId = this.dataset.id;
+
+        fetch(`/installment/mark-paid/${instId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.open(`/admission/receipt/{{ admission.id }}/`, '_blank');
+                location.reload();
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

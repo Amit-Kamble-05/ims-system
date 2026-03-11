@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Course Admission{% endblock %}
+{% block page_title %}
+    {% if edit_mode %}Edit Admission{% else %}Course Admission{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_content.css' %}">
+{% endblock %}
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+
+        <!-- ================= COURSE DETAILS ================= -->
+        <div class="col-md-6">
+            <div class="card p-3 mb-3">
+                <h6>Course Details</h6>
+
+                <!-- COURSE -->
+                <label>Select Course</label>
+                <select name="course" id="course" class="form-control" required>
+                    <option value="">Select Course</option>
+                    {% for c in courses %}
+                    <option value="{{ c.id }}"
+                        data-duration="{{ c.duration }}"
+                        data-fees="{{ c.total_fees }}"
+                        {% if admission and admission.course.id == c.id %}
+                            selected
+                        {% elif course_id and course_id|add:"0" == c.id %}
+                            selected
+                        {% endif %}>
+                        {{ c.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <!-- COURSE CONTENT -->
+                <label class="mt-2">Course Content</label>
+
+                <div id="courseContentBox" class="content-box">
+                    <small class="text-muted">Select course content</small>
+                </div>
+
+                <!-- DURATION -->
+                <label class="mt-2">Duration</label>
+                <input id="duration" class="form-control" value="{% if admission %}{{ admission.course.duration }}  {% endif %}" readonly>
+
+                <!-- ================= BATCH ================= -->
+                <label class="mt-2">Batch Type</label>
+                <select name="batch_type" class="form-control" required>
+                    <option value="">Select Batch</option>
+                    <option value="DAILY" {% if admission and admission.batch_type == 'DAILY' or batch_type == 'DAILY' %}selected{% endif %}>Daily</option>
+                    <option value="WEEKEND" {% if admission and admission.batch_type == 'WEEKEND' or batch_type == 'WEEKEND' %}selected{% endif %}>Weekend</option>
+                    <option value="MWF" {% if admission and admission.batch_type == 'MWF' or batch_type == 'MWF' %}selected{% endif %}>MWF</option>
+                    <option value="TTS" {% if admission and admission.batch_type == 'TTS' or batch_type == 'TTS' %}selected{% endif %}>TTS</option>
+                </select>
+
+                <label class="mt-2">Batch Time</label>
+                <select name="batch_time" class="form-control" required>
+                    <option value="">Select Batch Time</option>
+
+                    <option value="09-10"
+                        {% if admission and admission.batch_time == '09-10' or batch_time == '09-10'%}selected{% endif %}>
+                        09:00 AM – 10:00 AM
+                    </option>
+
+                    <option value="10-11"
+                        {% if admission and admission.batch_time == '10-11' or batch_time == '10-11' %}selected{% endif %}>
+                        10:00 AM – 11:00 AM
+                    </option>
+
+                    <option value="11-12"
+                        {% if admission and admission.batch_time == '11-12' or batch_time == '11-12' %}selected{% endif %}>
+                        11:00 AM – 12:00 PM
+                    </option>
+
+                    <option value="12-13"
+                        {% if admission and admission.batch_time == '12-13' or batch_time == '12-13' %}selected{% endif %}>
+                        12:00 PM – 01:00 PM
+                    </option>
+
+                    <option value="13-14"
+                        {% if admission and admission.batch_time == '13-14' or batch_time == '13-14' %}selected{% endif %}>
+                        01:00 PM – 02:00 PM
+                    </option>
+
+                    <option value="14-15"
+                        {% if admission and admission.batch_time == '14-15' or batch_time == '14-15' %}selected{% endif %}>
+                        02:00 PM – 03:00 PM
+                    </option>
+
+                    <option value="15-16"
+                        {% if admission and admission.batch_time == '15-16' or batch_time == '15-16' %}selected{% endif %}>
+                        03:00 PM – 04:00 PM
+                    </option>
+
+                    <option value="16-17"
+                        {% if admission and admission.batch_time == '16-17' or batch_time == '16-17' %}selected{% endif %}>
+                        04:00 PM – 05:00 PM
+                    </option>
+
+                    <option value="17-18"
+                        {% if admission and admission.batch_time == '17-18' or batch_time == '17-18' %}selected{% endif %}>
+                        05:00 PM – 06:00 PM
+                    </option>
+
+                    <option value="18-19"
+                        {% if admission and admission.batch_time == '18-19' or batch_time == '18-19' %}selected{% endif %}>
+                        06:00 PM – 07:00 PM
+                    </option>
+
+                    <option value="19-20"
+                        {% if admission and admission.batch_time == '19-20' or batch_time == '19-20' %}selected{% endif %}>
+                        07:00 PM – 08:00 PM
+                    </option>
+
+                    <option value="20-21"
+                        {% if admission and admission.batch_time == '20-21' or batch_time == '20-21' %}selected{% endif %}>
+                        08:00 PM – 09:00 PM
+                    </option>
+                </select>
+
+            </div>
+        </div>
+
+        <!-- ================= FEES DETAILS ================= -->
+        <div class="col-md-6">
+            <div class="card p-3 mb-3">
+                <h6>Fees Details</h6>
+
+                <label>Total Fees</label>
+                <input id="total_fees" class="form-control" value="{% if admission %}{{ admission.course.total_fees }}{% endif %}" readonly>
+
+                <label class="mt-2">Discounted Fees</label>
+                <input name="discounted_fees" class="form-control" value="{% if admission %}{{ admission.discounted_fees }}{% elif fees %}{{ fees }}{% endif %}" required>
+
+                <label class="mt-2">Payment Type</label>
+                <select name="payment_type" id="paymentType" class="form-control" required>
+                    <option value="Full" {% if admission and admission.payment_type == 'Full' %}selected{% endif %}>Full</option>
+                    <option value="Installment" {% if admission and admission.payment_type == 'Installment' %}selected{% endif %}>Installment</option>
+                </select>
+
+                <label class="mt-2">GST</label>
+                <select name="gst" class="form-control">
+                    <option value="No" {% if admission and not admission.gst %}selected{% endif %}>No</option>
+                    <option value="Yes" {% if admission and admission.gst %}selected{% endif %}>Yes</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= INSTALLMENTS ================= -->
+    <div class="card p-3 mb-3">
+        <h6>Installment Details</h6>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Installment Type</th>
+                    <th>Pay Date</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="installmentBody">
+
+            {% if installments %}
+                {% for inst in installments %}
+                <tr class="installment-row" data-status="{% if inst.status == 'PAID' %}PAID{% else %}UNPAID{% endif %}">
+                    <td>
+                        <input name="installment_type[]" class="form-control" value="{{ inst.installment_type }}">
+                    </td>
+                    <td>
+                        <input type="date" name="installment_date[]" class="form-control" value="{{ inst.pay_date|date:'Y-m-d' }}">
+                    </td>
+                    <td>
+                        <input name="installment_amount[]" class="form-control installment-amount" value="{{ inst.amount }}">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger remove-row">×</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <!-- REGISTRATION FEES -->
+            <tr class="installment-row registration-row">
+                <td>
+                    <input class="form-control" value="Registration Fees" readonly>
+                </td>
+                <td>
+                    <input type="date" class="form-control" value="{{ today }}" readonly>
+                </td>
+                <td>
+                    <input class="form-control installment-amount" value="100" readonly>
+                </td>
+                <td>
+                    <button type="button" id="addInstallment" class="btn btn-outline-primary btn-sm mt-2">
+                        + Add Installment
+                    </button>
+                </td>
+            </tr>
+            {% endif %}
+
+            </tbody>
+        </table>
+
+        <div class="mt-3">
+            <strong>Total : ₹ <span id="installmentTotal">0</span></strong><br>
+            <strong>Remaining Balance: ₹ <span id="remainingBalance">0</span></strong>
+        </div>
+    </div>
+
+    <!-- ================= ACTION BUTTONS ================= -->
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success">
+            {% if edit_mode %}Update Admission{% else %}Complete Admission{% endif %}
+        </button>
+
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script src="{% static 'js/course_admission.js' %}"></script>
+<script src="{% static 'js/installment.js' %}"></script>
+
+{% endblock %}

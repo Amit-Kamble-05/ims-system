@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add Student | IMS{% endblock %}
+{% block page_title %}Add Student{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/student_form.css' %}">
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="hidden" name="course" value="{{ course }}">
+<input type="hidden" name="fees" value="{{ fees }}">
+<input type="hidden" name="batch_type" value="{{ batch_type }}">
+<input type="hidden" name="batch_time" value="{{ batch_time }}">
+
+<div class="student-form-wrapper">
+
+    <!-- PHOTO SECTION -->
+    <div class="photo-section">
+        <label class="section-label">PHOTO *</label>
+
+        <div class="photo-card">
+            <img id="photoPreview"
+                 src="{% static 'img/user-placeholder.png' %}">
+        </div>
+
+        <label class="upload-btn">
+            Choose File
+            <input type="file" id="photoInput" name="photo" accept="image/*" hidden>
+        </label>
+    </div>
+
+    <!-- FORM SECTION -->
+    <div class="form-section">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>FIRST NAME</label>
+                <input type="text" name="first_name" value="{{ first_name }}" style="text-transform: uppercase;" required>
+            </div>
+
+            <div class="form-group">
+                <label>MIDDLE NAME</label>
+                <input type="text" name="middle_name" value="{{ middle_name }}" style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label>LAST NAME</label>
+                <input type="text" name="last_name" value="{{ last_name }}" style="text-transform: uppercase;" required>
+            </div>
+
+            <div class="form-group">
+                <label>DOB</label>
+                <input type="date" name="dob">
+            </div>
+
+            <div class="form-group">
+                <label>GENDER</label>
+                <select name="gender">
+                    <option value="">Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email" value="{{ email }}" name="email">
+            </div>
+
+            <div class="form-group">
+                <label>PHONE NUMBER</label>
+                <input type="text" name="phone" value="{{ phone }}" placeholder="+91">
+            </div>
+
+            <div class="form-group">
+                <label>ALTERNATE NUMBER</label>
+                <input type="text" name="alternate_phone" placeholder="+91">
+            </div>
+
+            <div class="form-group">
+                <label>CITY</label>
+                <select name="city">
+                    <option value="">City</option>
+                    <option value="Akurdi" {% if city == "Akurdi" %}selected{% endif %}>Akurdi</option>
+                    <option value="Alandi" {% if city == "Alandi" %}selected{% endif %}>Alandi</option>
+                    <option value="Baner" {% if city == "Baner" %}selected{% endif %}>Baner</option>
+                    <option value="Bhosari" {% if city == "Bhosari" %}selected{% endif %}>Bhosari</option>
+                    <option value="Chinchwad" {% if city == "Chinchwad" %}selected{% endif %}>Chinchwad</option>
+                    <option value="Dapodi" {% if city == "Dapodi" %}selected{% endif %}>Dapodi</option>
+                    <option value="Hinjewadi" {% if city == "Hinjewadi" %}selected{% endif %}>Hinjewadi</option>
+                    <option value="Katraj" {% if city == "Katraj" %}selected{% endif %}>Katraj</option>
+                    <option value="Khadki" {% if city == "Khadki" %}selected{% endif %}>Khadki</option>
+                    <option value="Kothrud" {% if city == "Kothrud" %}selected{% endif %}>Kothrud</option>
+                    <option value="Nigdi" {% if city == "Nigdi" %}selected{% endif %}>Nigdi</option>
+                    <option value="New Sangvi" {% if city == "New Sangvi" %}selected{% endif %}>New Sangvi</option>
+                    <option value="Old Sangvi" {% if city == "Old Sangvi" %}selected{% endif %}>Old Sangvi</option>
+                    <option value="Pashan" {% if city == "Pashan" %}selected{% endif %}>Pashan</option>
+                    <option value="Pimple Gurav" {% if city == "Pimple Gurav" %}selected{% endif %}>Pimple Gurav</option>
+                    <option value="Pimpri" {% if city == "Pimpri" %}selected{% endif %}>Pimpri</option>
+                    <option value="Ravet" {% if city == "Ravet" %}selected{% endif %}>Ravet</option>
+                    <option value="Shivajinagar" {% if city == "Shivajinagar" %}selected{% endif %}>Shivajinagar</option>
+                    <option value="Thergaon" {% if city == "Thergaon" %}selected{% endif %}>Thergaon</option>
+                    <option value="Vishrantwadi" {% if city == "Vishrantwadi" %}selected{% endif %}>Vishrantwadi</option>
+                    <option value="Wakad" {% if city == "Wakad" %}selected{% endif %}>Wakad</option>
+                    <option value="Warje" {% if city == "Warje" %}selected{% endif %}>Warje</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>QUALIFICATION</label>
+                <select name="qualification">
+                    <option value="">Select Qualification</option>
+                    <option value="SSC" {% if qualification == "SSC" %}selected{% endif %}>SSC</option>
+                    <option value="HSC" {% if qualification == "HSC" %}selected{% endif %}>HSC</option>
+                    <option value="Diploma" {% if qualification == "Diploma" %}selected{% endif %}>Diploma</option>
+                    <option value="ITI" {% if qualification == "ITI" %}selected{% endif %}>ITI</option>
+                    <option value="BA" {% if qualification == "BA" %}selected{% endif %}>BA - Bachelor of Arts</option>
+                    <option value="BCom" {% if qualification == "BCom" %}selected{% endif %}>BCom - Bachelor of Commerce</option>
+                    <option value="BSc" {% if qualification == "BSc" %}selected{% endif %}>BSc - Bachelor of Science</option>
+                    <option value="BCA" {% if qualification == "BCA" %}selected{% endif %}>BCA - Bachelor of Computer Applications</option>
+                    <option value="BBA" {% if qualification == "BBA" %}selected{% endif %}>BBA - Bachelor of Business Administration</option>
+                    <option value="BTech" {% if qualification == "BTech" %}selected{% endif %}>BTech - Bachelor of Technology</option>
+                    <option value="BE" {% if qualification == "BE" %}selected{% endif %}>BE - Bachelor of Engineering</option>
+                    <option value="BPharm" {% if qualification == "BPharm" %}selected{% endif %}>BPharm - Bachelor of Pharmacy</option>
+                    <option value="BEd" {% if qualification == "BEd" %}selected{% endif %}>BEd - Bachelor of Education</option>
+                    <option value="LLB" {% if qualification == "LLB" %}selected{% endif %}>LLB - Bachelor of Law</option>
+                    <option value="BArch" {% if qualification == "BArch" %}selected{% endif %}>BArch - Bachelor of Architecture</option>
+                    <option value="BDes" {% if qualification == "BDes" %}selected{% endif %}>BDes - Bachelor of Design</option>
+                    <option value="BMS" {% if qualification == "BMS" %}selected{% endif %}>BMS - Bachelor of Management Studies</option>
+                    <option value="BMM" {% if qualification == "BMM" %}selected{% endif %}>BMM - Bachelor of Mass Media</option>
+                    <option value="BHM" {% if qualification == "BHM" %}selected{% endif %}>BHM - Bachelor of Hotel Management</option>
+                    <option value="MA" {% if qualification == "MA" %}selected{% endif %}>MA - Master of Arts</option>
+                    <option value="MCom" {% if qualification == "MCom" %}selected{% endif %}>MCom - Master of Commerce</option>
+                    <option value="MSc" {% if qualification == "MSc" %}selected{% endif %}>MSc - Master of Science</option>
+                    <option value="MCA" {% if qualification == "MCA" %}selected{% endif %}>MCA - Master of Computer Applications</option>
+                    <option value="MBA" {% if qualification == "MBA" %}selected{% endif %}>MBA - Master of Business Administration</option>
+                    <option value="MTech" {% if qualification == "MTech" %}selected{% endif %}>MTech - Master of Technology</option>
+                    <option value="ME" {% if qualification == "ME" %}selected{% endif %}>ME - Master of Engineering</option>
+                    <option value="MPharm" {% if qualification == "MPharm" %}selected{% endif %}>MPharm - Master of Pharmacy</option>
+                    <option value="MEd" {% if qualification == "MEd" %}selected{% endif %}>MEd - Master of Education</option>
+                    <option value="LLM" {% if qualification == "LLM" %}selected{% endif %}>LLM - Master of Law</option>
+                    <option value="MArch" {% if qualification == "MArch" %}selected{% endif %}>MArch - Master of Architecture</option>
+                    <option value="MDes" {% if qualification == "MDes" %}selected{% endif %}>MDes - Master of Design</option>
+                    <option value="MPA" {% if qualification == "MPA" %}selected{% endif %}>MPA - Master of Public Administration</option>
+                    <option value="MSW" {% if qualification == "MSW" %}selected{% endif %}>MSW - Master of Social Work</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-group full">
+            <label>ADDRESS</label>
+            <textarea name="address" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Save & Next →
+            </button>
+        </div>
+
+    </div>
+
+</div>
+<script src="{% static 'js/student_form.js' %}"></script>
+</form>
+
+{% endblock %}

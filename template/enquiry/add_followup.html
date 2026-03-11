@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <!-- PAGE HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-semibold">Add Follow-up</h4>
+            <small class="text-muted">
+                Enquiry ID : {{ enquiry.enquiry_code }}
+            </small>
+        </div>
+        <a href="{% url 'enquiry_detail' enquiry.Enq_ID %}" 
+           class="btn btn-outline-secondary btn-sm">
+           Back
+        </a>
+    </div>
+
+    <!-- FOLLOWUP CARD -->
+    <div class="card detail-card">
+        <div class="card-header">
+            <i class="bi bi-calendar-check"></i>
+            Follow-up Details
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <!-- REMARK -->
+                    <div class="col-md-4">
+                        <label class="form-label">Remark</label>
+                        <input type="text"
+                               name="remark"
+                               class="form-control"
+                               placeholder="Enter follow-up remark"
+                               required>
+                    </div>
+                    <!-- NEXT FOLLOWUP DATE -->
+                    <div class="col-md-4">
+                        <label class="form-label">Next Follow-up Date</label>
+                        <input type="date"
+                               name="followup_date"
+                               class="form-control"
+                               required>
+                    </div>
+                    <!-- NEXT FOLLOWUP TIME -->
+                    <div class="col-md-4">
+                        <label class="form-label">Time</label>
+                        <input type="time"
+                               name="followup_time"
+                               class="form-control"
+                               required>
+                    </div>
+                </div>
+                <!-- ACTION BUTTONS -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Follow-up
+                    </button>
+                        
+                    {% if enquiry.status != "CONVERTED" %}
+                    <a href="{% url 'add_student' %}?enquiry_id={{ enquiry.Enq_ID }}" class="btn btn-success">
+                        Convert To Admission
+                    </a>
+                    {% else %} <span class="badge bg-success">Converted</span>
+                    {% endif %}
+                    
+                        <a href="{% url 'change_status' enquiry.Enq_ID 'FOLLOWUP' %}"
+                       class="btn btn-warning">
+                       Mark Follow-up
+                    </a>
+                    <a href="{% url 'change_status' enquiry.Enq_ID 'CLOSED' %}"
+                       class="btn btn-danger">
+                       Close Enquiry
+                    </a>
+                    <a href="{% url 'enquiry_detail' enquiry.Enq_ID %}"
+                       class="btn btn-outline-secondary">
+                       Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

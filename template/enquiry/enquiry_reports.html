@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/enq_report.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+
+    <h4>Enquiry Reports</h4>
+
+    <div class="filters">
+
+        <input type="text" id="searchInput" placeholder="Search enquiry..." class="search-input">
+
+        <input type="date" id="fromDate" class="date-filter">
+        <input type="date" id="toDate" class="date-filter">
+
+        <select id="statusFilter" class="status-filter">
+            <option value="">All Status</option>
+            <option value="New">New</option>
+            <option value="Converted">Converted</option>
+            <option value="Closed">Closed</option>
+        </select>
+
+        <button id="clearFilters" class="clear-btn">Reset</button>
+
+    </div>
+
+</div>
+
+<div class="report-actions">
+    <a href="{% url 'export_enquiry_excel' %}" class="btn btn-success">
+        Export Excel
+    </a>
+</div>
+<!-- REPORT CARD -->
+<div class="report-card">
+    <div class="report-header">
+        Total Enquiries : {{ enquiries|length }}
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="erp-table" id="enquiryTable">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Enquiry Date</th>
+                    <th>Student Name</th>
+                    <th>Mobile</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for e in enquiries %}
+            <tr>
+
+                <td>
+                    <a href="{% url 'enquiry_detail' e.Enq_ID %}" class="link-id">
+                        {{ e.enquiry_code }}
+                    </a>
+                </td>
+
+                <td>{{ e.enquiry_date|date:"d M Y" }}</td>
+
+                <td class="student-name">
+                    {{ e.first_name }} {{ e.last_name }}
+                </td>
+
+                <td>{{ e.mobile_no }}</td>
+
+                <td>
+                    <span class="course-pill">
+                        {{ e.interested_course }}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="status status-{{ e.status|lower }}">
+                        {{ e.get_status_display }}
+                    </span>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+<script src="{% static 'js/enquiry_report.js' %}"></script>
+
+{% endblock %}

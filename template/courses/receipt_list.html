@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Course Admission{% endblock %}
+{% block page_title %}
+    {% if edit_mode %}Edit Admission{% else %}Course Admission{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/receipt_list.css' %}">
+{% endblock %}
+{% block content %}
+<!-- ================= HEADER ================= -->
+<div class="page-header">
+    <h2>Print Receipt</h2>
+</div>
+
+<!-- ================= FILTER BAR ================= -->
+<div class="filter-bar">
+    <form method="get">
+        <div class="filter-group">
+            <label>Single Date</label>
+            <input type="date" name="date">
+        </div>
+
+        <div class="filter-group">
+            <label>From</label>
+            <input type="date" name="from">
+        </div>
+
+        <div class="filter-group">
+            <label>To</label>
+            <input type="date" name="to">
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn search">Search</button>
+            <a href="{% url 'receipt_list' %}" class="btn clear">Clear</a>
+        </div>
+    </form>
+</div>
+
+<!-- ================= TABLE ================= -->
+<div class="table-wrapper">
+    <table class="receipt-table">
+        <thead>
+            <tr>
+                <th>S. No.</th>
+                <th>Receipt Date</th>
+                <th>Receipt No.</th>
+                <th>Student Name</th>
+                <th>Amount</th>
+                <th>Course</th>
+                <th>Batch</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in receipts %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+
+                <td>{{ r.paid_at }}</td>
+
+                <td>
+                    REC/{{ r.paid_at|date:"Y" }}/{{ r.admission.id }}/{{ r.id }}
+                </td>
+
+                <td>
+                    {{ r.admission.student.first_name }}
+                    {{ r.admission.student.last_name }}
+                </td>
+
+                <td class="amount">₹{{ r.amount }}</td>
+
+                <td>{{ r.admission.course.name }}</td>
+
+                <td>
+                    {{ r.admission.batch_type }}
+                    ({{ r.admission.batch_time }})
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="no-data">
+                    No receipts found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- ================= PAGINATION ================= -->
+<div class="pagination">
+
+    {% if receipts.has_previous %}
+        <a href="?page={{ receipts.previous_page_number }}" class="page-btn">
+            Previous
+        </a>
+    {% else %}
+        <span class="page-btn disabled">Previous</span>
+    {% endif %}
+
+    {% for num in receipts.paginator.page_range %}
+        {% if receipts.number == num %}
+            <span class="page-btn active">{{ num }}</span>
+        {% else %}
+            <a href="?page={{ num }}" class="page-btn">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if receipts.has_next %}
+        <a href="?page={{ receipts.next_page_number }}" class="page-btn">
+            Next
+        </a>
+    {% else %}
+        <span class="page-btn disabled">Next</span>
+    {% endif %}
+
+</div>
+
+</div>
+
+<!-- ================= SUMMARY CARDS ================= -->
+<div class="summary-cards">
+    <div class="card">
+        <p>Total Collection</p>
+        <h3>₹{{ total_collection }}</h3>
+    </div>
+
+    <div class="card">
+        <p>Total Receipts</p>
+        <h3>{{ total_receipt }}</h3>
+    </div>
+</div>
+{% endblock %}

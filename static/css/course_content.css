@@ -1,0 +1,15 @@
+.content-box {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 5px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+}
+
+.content-check {
+    font-size: 0.9rem;
+    font-weight: 500;
+}

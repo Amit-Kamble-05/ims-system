@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Student | IMS{% endblock %}
+{% block page_title %}Edit Student{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <label>First Name</label>
+            <input class="form-control mb-2" name="first_name" value="{{ student.first_name }}" required>
+        </div>
+
+        <div class="col-md-4">
+            <label>Middle Name</label>
+            <input class="form-control mb-2" name="middle_name" value="{{ student.middle_name }}">
+        </div>
+
+        <div class="col-md-4">
+            <label>Last Name</label>
+            <input class="form-control mb-2" name="last_name" value="{{ student.last_name }}" required>
+        </div>
+
+        <div class="col-md-4">
+            <label>Email</label>
+            <input class="form-control mb-2" name="email" value="{{ student.email }}" required>
+        </div>
+
+        <div class="col-md-4">
+            <label>Phone</label>
+            <input class="form-control mb-2" name="phone" value="{{ student.phone }}" required>
+        </div>
+
+        <div class="col-md-4">
+            <label>City</label>
+            <select name="city" class="form-control mb-2">
+                <option value="{{ student.city }}">{{ student.city }}</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="btn btn-success mt-3">Update Student</button>
+    <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">Cancel</a>
+
+</form>
+
+{% endblock %}

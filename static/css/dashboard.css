@@ -1,0 +1,54 @@
+.dashboard-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-img {
+    width: 50px;
+    height: 50px;
+}
+
+.quick-box {
+    border-radius: 10px;
+    padding: 25px 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.quick-box img {
+    width: 80px;
+    margin-bottom: 5px;
+}
+
+.quick-box p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.quick-box:hover {
+    transform: translateY(-4px);
+}
+
+/* Colors */
+.bg-green { background: #e9fbe7; }
+.bg-cyan { background: #e8fbff; }
+.bg-blue { background: #f2f5ff; }
+.bg-red { background: #ffecec; }
+.bg-orange { background: #fff5e6; }
+.bg-indigo { background: #f0f2ff; }
+.bg-pink { background: #fff0f4; }
+.bg-yellow { background: #fff8e6; }
+
+
+a{
+    color: black;
+    text-decoration: none;
+}

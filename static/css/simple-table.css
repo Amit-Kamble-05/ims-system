@@ -1,0 +1,49 @@
+/* ===== SIMPLE LIGHT BLUE TABLE ===== */
+
+.table {
+    background-color: #ffffff;
+    border: 1px solid #d6e6ff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Header */
+.table thead th {
+    background-color: #f0f6ff;
+    color: #1f3c88;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #d6e6ff;
+    text-align: center;
+}
+
+/* Body cells */
+.table tbody td {
+    border: 1px solid #d6e6ff;
+    font-size: 14px;
+    color: #333;
+    vertical-align: middle;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+    background-color: #f7fbff;
+}
+
+/* Checkbox column center */
+.table td:first-child,
+.table th:first-child {
+    text-align: center;
+}
+
+/* Status badges (optional) */
+.badge {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 12px;
+}
+
+/* Light spacing */
+.table-responsive {
+    border-radius: 6px;
+}

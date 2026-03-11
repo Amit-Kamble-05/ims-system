@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/enquiry_details.css' %}">
+{% endblock %}
+{% block title %}Enquiry Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- PAGE HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">
+                <i class="bi bi-person-lines-fill"></i>
+                Enquiry Details
+            </h4>
+            <nav class="breadcrumb-small">
+                Dashboard / Enquiry / Details
+            </nav>
+        </div>
+        
+        <a href="{% url 'enquiry_reports' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'edit_enquiry' enquiry.Enq_ID %}" class="btn btn-warning btn-sm">
+        <i class="bi bi-pencil-square"></i> Edit Enquiry
+    </a>
+</div>
+    <!-- PROFILE HEADER -->
+   <div class="card enquiry-header-card mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+
+            <!-- LEFT SIDE -->
+            <div class="d-flex align-items-center">
+
+                <div class="avatar-circle">
+                    {{ enquiry.first_name|first|upper }}
+                </div>
+
+                <div class="ms-3">
+                    <h5 class="mb-1 fw-semibold">
+                        {{ enquiry.first_name }} {{ enquiry.last_name }}
+                    </h5>
+
+                    <small class="text-muted">
+                        Enquiry ID : {{ enquiry.Enq_ID }}
+                    </small>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE STATUS -->
+           <div class="d-flex align-items-center gap-2">
+                <span class="status-pill status-{{ enquiry.status|lower }}">
+                    {{ enquiry.get_status_display }}
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+<!-- STUDENT INFO -->
+    <div class="col-md-6">
+        <div class="card detail-card">
+            <div class="card-header">
+                <i class="bi bi-person"></i>
+                    Student Information
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <div class="info-label">Mobile</div>
+                    <div class="info-value">{{ enquiry.mobile_no }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Email</div>
+                    <div class="info-value">{{ enquiry.email }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Source</div>
+                    <div class="info-value">{{ enquiry.source }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Enquiry Date</div>
+                    <div class="info-value">{{ enquiry.enquiry_date|date:"d M Y" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSE INFO -->
+    <div class="col-md-6">
+        <div class="card detail-card">
+            <div class="card-header">
+                <i class="bi bi-book"></i>
+                Course Details
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <span>Course</span>
+                    <strong>{{ enquiry.interested_course }}</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-muted">Course Content</span>
+                    <strong>{{ enquiry.course_content }}</strong>
+                </div>
+                <div class="info-row">
+                    <span>Offered Fees</span>
+                    <strong>₹ {{ enquiry.offered_fees }}</strong>
+                </div>
+                <div class="info-row">
+                    <span>Batch</span>
+                    <strong>{{ enquiry.batch_type }} ({{ enquiry.batch_time }})</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- FOLLOWUP INFO -->
+<div class="col-md-12">
+    <div class="card detail-card">
+
+        <div class="card-header">
+            <i class="bi bi-calendar-check"></i>
+            Follow-up Information
+            
+            <a href="{% url 'add_followup' enquiry.Enq_ID %}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Follow-up
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Next Followup -->
+
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span>Next Follow-up Date</span>
+                        <strong>
+                            {{ enquiry.followup_date|date:"d M Y" }}
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span>Time</span>
+                        <strong>
+                            {{ enquiry.followup_time|time:"H:i" }}
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span>Remark</span>
+                        <strong>
+                            {{ enquiry.remarks }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <!-- Follow-up History -->
+            <h6 class="mt-4 mb-3">
+                <i class="bi bi-clock-history"></i>
+                Follow-up History
+            </h6>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:120px">Date</th>
+                            <th style="width:90px">Time</th>
+                            <th>Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for f in followups %}
+                        <tr>
+                            <td>{{ f.done_date|date:"d M Y" }}</td>
+                            <td>{{ f.done_time|time:"H:i" }}</td>
+                            <td>{{ f.remark }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+                                No follow-up history available
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
