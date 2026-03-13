@@ -1,0 +1,30 @@
+<h2>Admin Signup</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.username.label }}<br>
+    {{ form.username }}<br><br>
+
+    {{ form.email.label }}<br>
+    {{ form.email }}<br><br>
+
+    {{ form.phone.label }}<br>
+    {{ form.phone }}<br><br>
+
+    {{ form.password.label }}<br>
+    {{ form.password }}<br><br>
+
+    <button type="submit">Create Admin</button>
+</form>
+<script>
+function togglePassword() {
+    const pass = document.getElementById("password");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+    } else {
+        pass.type = "password";
+    }
+}
+</script>

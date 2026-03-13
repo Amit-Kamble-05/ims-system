@@ -150,3 +150,28 @@ def admin_dashboard(request):
 def admin_logout(request):
     logout(request)
     return redirect('admin_login')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+from .forms import AdminSignupForm
+
+User = get_user_model()
+
+def admin_signup(request):
+
+    if request.method == "POST":
+        form = AdminSignupForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data["password"])
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+
+            return redirect("login")
+
+    else:
+        form = AdminSignupForm()
+
+    return render(request, "accounts/admin_signup.html", {"form": form})
